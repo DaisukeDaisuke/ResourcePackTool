@@ -84,7 +84,7 @@ $contentFile = CryptoHelper::generateContentsFile($uuid, $json, $contentKey);
 //var_dump($json, hexentities1($contentFile));
 echo $outputdir."contents.json with ".$contentKey."\n";
 file_put_contents($outputdir."contents.json", $contentFile);
-file_put_contents($outputdir.basename($outputdir).".key", $contentKey);
+file_put_contents($outputdir.basename($outputdir).".zip.key", $contentKey);
 //var_dump($content1);
 
 echo "copy: ".$outputdir."manifest.json\n";
