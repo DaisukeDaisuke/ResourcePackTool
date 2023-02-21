@@ -1,0 +1,29 @@
+{
+  "require": {
+    "php": "^8.0|^8.1",
+    "symfony/console": "*",
+    "symfony/filesystem": "*",
+    "pocketmine/errorhandler": "*",
+    "ext-openssl": "*",
+    "ext-zip": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "resourceTools\\": "src/"
+    }
+  },
+  "require-dev": {
+    
+  },
+  "scripts": {
+    "make-phar": [
+        "@composer install --no-dev  --classmap-authoritative --ignore-platform-reqs",
+        "@php -dphar.readonly=0 make-phar.php"
+    ],
+    "make-mini": [
+      "@putenv COMPOSER=composer-mini.json",
+      "@composer install --no-dev --classmap-authoritative --ignore-platform-reqs",
+      "@php -dphar.readonly=0 make-phar.php -m"
+  ]
+  }
+}

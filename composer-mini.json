@@ -1,0 +1,17 @@
+{
+    "require": {
+      "php": "^8.0|^8.1",
+      "symfony/filesystem": "*"
+    },
+    "autoload": {
+      "psr-4": {
+        "resourceTools\\": "src/"
+      },
+      "exclude-from-files": [
+        "src/command/decrypt.php",
+        "src/command/encrypt.php",
+        "src/main.php"
+      ]
+    }
+  }
+  
