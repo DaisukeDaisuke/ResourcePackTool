@@ -59,3 +59,9 @@ The modularized program can also be executed directly
 php encrypt.php input -o output
 php decrypt.php input -o output
 ```
+
+### override
+(All contents.json should be deleted after processing.)
+```
+php resourceTools.phar rd -d original -o original
+```
