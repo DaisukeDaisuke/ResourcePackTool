@@ -5,6 +5,14 @@ Tools to encrypt/decrypt ResourcePack
 - openssl extension
 - ext-zip extension (optional)
 
+## command
+```
+  c           decode contents.json
+  decrypt     decrypt resource
+  encrypt     encrypt resource
+  rdecrypt    decrypt resource recursively
+```
+
 ## build
 (and Install dependencies)
 ```

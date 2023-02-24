@@ -29,7 +29,9 @@ class DecryptRecursive extends Command{
             ->addOption('output', "o", InputOption::VALUE_REQUIRED, 'output dir', "decrypt")
             ->addOption('with-progress', "p", InputOption::VALUE_NONE, 'use progress bar')
             ->addOption('trim', "t", InputOption::VALUE_NONE, "no trim the json file.")
-            ->addOption('key', "k", InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'This key is used to decrypt preferentially');
+            ->addOption('key', "k", InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'This key is used to decrypt preferentially')
+			->addOption('originalName', "d", InputOption::VALUE_NONE, 'Do not change the output name folder name');
+			//->addOption('override', "w", InputOption::VALUE_NONE, 'Output and input are the same');
             //->addOption('thread', "j", InputOption::VALUE_REQUIRED, 'thread count', 1);
     }
 
@@ -43,6 +45,8 @@ class DecryptRecursive extends Command{
         $withProgress = $input->getOption('with-progress');
         $trim = $input->getOption('trim');
         $preferential_keys = $input->getOption('key');
+		$useOriginalName = $input->getOption('originalName');
+		//$mustOverride = $input->getOption('override');
         //$thread = $input->getOption('thread');
 
         $output->writeln("mode: decrypt");
@@ -78,6 +82,10 @@ class DecryptRecursive extends Command{
             if(($extention === "key"||$extention === "keys"||$extention === "txt"||$extention === "log"||$extention === "yml")&&filesize($file) >= 32&&filesize($file) < 1024 * 8){
                 //key + uuid4
                 //keyanduuid
+				if(preg_match('/(([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{12}))/iu', basename($file), $match)){
+					$output->writeln("scaning keys: skinpng  $file");
+					continue;
+				}
                 $output->writeln("scaning keys list: $file");
                 $uuid = null;
                 $key = null;
@@ -135,7 +143,7 @@ class DecryptRecursive extends Command{
         }
         $deciphers = [];
         foreach($files as $name => $file){
-            $decipher = new decipher($file, $outputDir, $name, !$trim);
+            $decipher = new decipher($file, $outputDir, $name, !$trim, $useOriginalName);
 			$key = null;
 			//check primary key
 			foreach($preferential_keys as $preferential_key){

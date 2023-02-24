@@ -23,10 +23,11 @@ class decipher extends Reader{
 		string $path,
 		string         $outputDir,
 		string         $outputFolderName,
-        private bool   $trim
+        private bool   $trim,
+		bool $forceName = false
     ){
 		parent::__construct($path);
-		if($this->fileAccess->exists("manifest.json")){
+		if(!$forceName&&$this->fileAccess->exists("manifest.json")){
 			$this->uuid = ManifestReader::getUUID($this->fileAccess);
 			$outputFolderName = ManifestReader::getName($this->fileAccess)."_".substr($this->uuid, 0, 8);
 		}
