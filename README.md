@@ -1,5 +1,11 @@
 # resourceTools
-Tools to encrypt/decrypt ResourcePack
+Tools to encrypt/decrypt ResourcePack(maincraft)
+
+Rust version(Other authors): https://github.com/valaphee/mcrputil  
+
+This repository does not reference any literature, I discovered these on my own  
+Therefore, the Unlicense license is legal, since I am not citing any code  
+
 #### Required Environment
 - php 8.0 or php 8.1
 - openssl extension
