@@ -58,6 +58,7 @@ php resourceTools.phar d input -o output
 
 ## Other usage
 This script supports reading and writing zip files
+Known Bug: Creating a zip file may result in folders inside the zip not being created properly due to improper handling of paths.  
 ```
 php resourceTools.phar encrypt input.zip -o output.zip
 php resourceTools.phar decrypt input.zip -o output.zip
