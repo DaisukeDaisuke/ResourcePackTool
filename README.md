@@ -5,6 +5,8 @@ Rust version(Other authors): https://github.com/valaphee/mcrputil
 
 This repository does not reference any literature, I discovered these on my own  
 Therefore, the Unlicense license is legal, since I am not citing any code  
+  
+Please make a backup of your resource pack before running this code, it can even destroy your original resource pack  
 
 #### Required Environment
 - php 8.0 or php 8.1
