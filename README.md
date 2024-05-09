@@ -1,5 +1,5 @@
 # resourceTools
-Tools to encrypt/decrypt ResourcePack(maincraft)
+Tools to encrypt/decrypt ResourcePack(minecraft)
 
 Rust version(Other authors): https://github.com/valaphee/mcrputil  
 
