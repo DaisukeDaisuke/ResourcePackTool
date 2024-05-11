@@ -8,7 +8,7 @@ Therefore, the Unlicense license is legal, since I am not citing any code
   
 Please make a backup of your resource pack before running this code, it can even destroy your original resource pack  
 
-> The posting date of mcrputil was October 28, 2022, and I independently discovered it on November 18, 2022, at 6:00 p.m., after 82 hours of research.
+>　The mcrputil was posted on October 28, 2022, and independently discovered on November 18, 2022, at 6:00 p.m.
 > I was unaware of the existence of mcrputil at the time I began my research.
 
 #### Required Environment
