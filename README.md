@@ -8,8 +8,8 @@ Therefore, the Unlicense license is legal, since I am not citing any code
   
 Please make a backup of your resource pack before running this code, it can even destroy your original resource pack  
 
->　The mcrputil was posted on October 28, 2022, and independently discovered on November 18, 2022, at 6:00 p.m.
-> I was unaware of the existence of mcrputil at the time I began my research.
+>　mcrputil posted on October 28, 2022 and I was independently discovered on November 18, 2022 at 6pm
+> I was unaware of the existence of mcrputil at the time I began my research
 
 #### Required Environment
 - php 8.0 or php 8.1, 8.2 and php 8.3 are maybe supported
