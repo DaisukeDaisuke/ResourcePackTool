@@ -16,6 +16,10 @@ Please make a backup of your resource pack before running this code, it can even
 These requirements can be met by using the official pmmp php binary  
 Please note that if needed, install the vc_redist.x64.exe that comes with the binaries  
 https://github.com/pmmp/PocketMine-MP/releases/latest  
+For Windows, run the following
+```
+.\bin\php\php.exe resourceTools.phar 
+```
 
 ## command
 ```
