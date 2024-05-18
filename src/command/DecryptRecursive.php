@@ -222,7 +222,7 @@ class DecryptRecursive extends Command{
             }
         }
         $bar1->finish();
-        echo "\ndone.\n";
+		$output->writeln("\ndone.\n");
 
         foreach(Transformer::calculatePercentage() as $extension => $array){
             [$percentage, $count] = $array;

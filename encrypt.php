@@ -39,7 +39,7 @@ $exclude = [
 ];
 
 echo "path: ".$dir."\n";
-echo "output dir: ".$output."\n";
+echo "output dir: ".$outputdir."\n";
 
 $content = [];
 foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, FilesystemIterator::KEY_AS_PATHNAME | FilesystemIterator::CURRENT_AS_FILEINFO | FilesystemIterator::SKIP_DOTS)) as $realpath => $file){
