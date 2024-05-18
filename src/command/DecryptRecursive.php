@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace resourceTools\command;
 
-use pocketmine\thread\Thread;
 use resourceTools\helper\decipher;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -32,13 +31,13 @@ class DecryptRecursive extends Command{
             ->addOption('with-progress', "p", InputOption::VALUE_NONE, 'use progress bar')
             ->addOption('trim', "t", InputOption::VALUE_NONE, "no trim the json file.")
             ->addOption('key', "k", InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'This key is used to decrypt preferentially')
-			->addOption('originalName', "d", InputOption::VALUE_NONE, 'Do not change the output name folder name');
-			//->addOption('override', "w", InputOption::VALUE_NONE, 'Output and input are the same');
-            //->addOption('thread', "j", InputOption::VALUE_REQUIRED, 'thread count', 1);
+            ->addOption('originalName', "d", InputOption::VALUE_NONE, 'Do not change the output name folder name');
+        //->addOption('override', "w", InputOption::VALUE_NONE, 'Output and input are the same');
+        //->addOption('thread', "j", InputOption::VALUE_REQUIRED, 'thread count', 1);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int{
-        if (!$output instanceof ConsoleOutputInterface) {
+    protected function execute(InputInterface $input, OutputInterface $output) : int{
+        if(!$output instanceof ConsoleOutputInterface){
             throw new \LogicException('This command accepts only an instance of "ConsoleOutputInterface".');
         }
 
@@ -47,8 +46,8 @@ class DecryptRecursive extends Command{
         $withProgress = $input->getOption('with-progress');
         $trim = $input->getOption('trim');
         $preferential_keys = $input->getOption('key');
-		$useOriginalName = $input->getOption('originalName');
-		//$mustOverride = $input->getOption('override');
+        $useOriginalName = $input->getOption('originalName');
+        //$mustOverride = $input->getOption('override');
         //$thread = $input->getOption('thread');
 
         $output->writeln("mode: decrypt");
@@ -75,7 +74,7 @@ class DecryptRecursive extends Command{
         $files = [];
         foreach(scandir($path) as $file){
             $key = null;
-            if($file === "." || $file === ".."){
+            if($file === "."||$file === ".."){
                 continue;
             }
             //ex
@@ -84,25 +83,25 @@ class DecryptRecursive extends Command{
             if(($extention === "key"||$extention === "keys"||$extention === "txt"||$extention === "log"||$extention === "yml")&&filesize($file) >= 32&&filesize($file) < 1024 * 8){
                 //key + uuid4
                 //keyanduuid
-				if(preg_match('/(([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{12}))/iu', basename($file), $match)){
-					$output->writeln("scaning keys: skinpng  $file");
-					continue;
-				}
+                if(preg_match('/(([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{12}))/iu', basename($file), $match)){
+                    $output->writeln("scaning keys: skinpng  $file");
+                    continue;
+                }
                 $output->writeln("scaning keys list: $file");
                 $uuid = null;
                 $key = null;
                 $counter = 0;
                 foreach(file($file) as $line){
-					$uuid = null;
-					$key = null;
+                    $uuid = null;
+                    $key = null;
                     $line = trim($line);
                     if(strlen($line) === 36&&preg_match('/(([0-9a-f]{8})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{4})-([0-9a-f]{12}))/iu', $line, $match)){
                         $uuid = $match[1];
                         continue;
                     }
                     if(strlen($line) === 32){
-						$preferential_keys[] = $line;
-						$output->writeln("Primary key found: ".$line);
+                        $preferential_keys[] = $line;
+                        $output->writeln("Primary key found: ".$line);
                         continue;
                     }
                     if(strlen($line) > 36){
@@ -127,7 +126,7 @@ class DecryptRecursive extends Command{
                 $output->writeln("found ".count($keys)." keys");
                 continue;
             }
-            
+
             if(is_dir($file)){
                 $contents = Path::join($file, "contents.json");
                 $manifest = Path::join($file, "manifest.json");
@@ -136,24 +135,24 @@ class DecryptRecursive extends Command{
                     continue;
                 }
                 $files[basename($file)] = $file;
-				$output->writeln("scaning keys: $file");
-				foreach(scandir($file) as $file1){
-					$extention = pathinfo($file1, PATHINFO_EXTENSION);
-					if($extention === "key"&&filesize($file1) >= 32){
-						try{
-							$uuid1 = ManifestReader::getUUID(new FileAccess($file));
-						}catch(\Throwable $e){
-							$output->writeln("scaning keys: ".$file." was skipped. reason: Unable to read ".$file."/".$file1."/manifest.json");
-							continue;
-						}
-						foreach(file($file1) as $line){
-							if(strlen($line) === 32){
-								$keys[$uuid1] = $line;
-								$output->writeln("found key: $uuid1/$line ($file1)");
-							}
-						}
-					}
-				}
+                $output->writeln("scaning keys: $file");
+                foreach(scandir($file) as $file1){
+                    $extention = pathinfo($file1, PATHINFO_EXTENSION);
+                    if($extention === "key"&&filesize($file1) >= 32){
+                        try{
+                            $uuid1 = ManifestReader::getUUID(new FileAccess($file));
+                        }catch(\Throwable $e){
+                            $output->writeln("scaning keys: ".$file." was skipped. reason: Unable to read ".$file."/".$file1."/manifest.json");
+                            continue;
+                        }
+                        foreach(file($file1) as $line){
+                            if(strlen($line) === 32){
+                                $keys[$uuid1] = $line;
+                                $output->writeln("found key: $uuid1/$line ($file1)");
+                            }
+                        }
+                    }
+                }
                 continue;
             }
             if($this->isZip($file)){
@@ -164,33 +163,33 @@ class DecryptRecursive extends Command{
         $deciphers = [];
         foreach($files as $name => $file){
             $decipher = new decipher($file, $outputDir, $name, !$trim, $useOriginalName);
-			$key = null;
-			//check primary key
-			foreach($preferential_keys as $preferential_key){
-				try{
-					$decipher->updateKey($preferential_key);
-					$key = $preferential_key;
-					break;
-				}catch(ContentsFileException $exception){
-					$output->writeln($name.": not match ".$preferential_key);
-				}
-			}
+            $key = null;
+            //check primary key
+            foreach($preferential_keys as $preferential_key){
+                try{
+                    $decipher->updateKey($preferential_key);
+                    $key = $preferential_key;
+                    break;
+                }catch(ContentsFileException $exception){
+                    $output->writeln($name.": not match ".$preferential_key);
+                }
+            }
             $key = $key ?? $decipher->getKey() ?? $keys[$decipher->getUUID()] ?? null;
             if($key === null){
                 $output->writeln($name." was skipped. reason: key not found");
                 continue;
             }
-			try{
-            	$decipher->updateKey($key);
-			}catch(ContentsFileException $exception){
-				$output->writeln($name.": Key mismatch! skipped, key: ".$key.", exception: ".$exception->getMessage());
-				continue;
-			}
+            try{
+                $decipher->updateKey($key);
+            }catch(ContentsFileException $exception){
+                $output->writeln($name.": Key mismatch! skipped, key: ".$key.", exception: ".$exception->getMessage());
+                continue;
+            }
             $deciphers[$name] = $decipher;
         }
         //collecting files
 
-        
+
         $output->writeln("total: ".count($deciphers));
         $output->writeln("collecting files");
         $totalFiles = 0;
@@ -220,19 +219,19 @@ class DecryptRecursive extends Command{
         foreach($bar2->iterate($deciphers) as $decipher){
             foreach($decipher->run() as $file){
                 $bar1->advance();
-            }   
+            }
         }
         $bar1->finish();
         echo "\ndone.\n";
 
-		foreach(Transformer::calculatePercentage() as $extension => $array){
-			[$percentage, $count] = $array;
-			$output->writeln(sprintf("%s: %.2f%% (%d)", $extension, $percentage, $count));
-		}
+        foreach(Transformer::calculatePercentage() as $extension => $array){
+            [$percentage, $count] = $array;
+            $output->writeln(sprintf("%s: %.2f%% (%d)", $extension, $percentage, $count));
+        }
         return 0;
     }
 
     function isZip(string $path) : bool{
-		return str_ends_with(trim($path, DIRECTORY_SEPARATOR), ".zip")||str_ends_with(trim($path, DIRECTORY_SEPARATOR), ".mcpack");
-	}
+        return str_ends_with(trim($path, DIRECTORY_SEPARATOR), ".zip")||str_ends_with(trim($path, DIRECTORY_SEPARATOR), ".mcpack");
+    }
 }
