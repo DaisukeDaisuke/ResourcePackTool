@@ -92,7 +92,7 @@ trait ZipAccess{
 					continue;
 				}
 				++$notReadable;
-				echo "[ZipAccess][WARNING]: Key not found: ".$this->dir." => ".$filename."\n";
+				echo "[ZipAccess][WARNING]: Key not found: ".$this->dir."/".$filename." => ".$filename."\n";
 			}
 			$list[$filename] = $filename;
 		}

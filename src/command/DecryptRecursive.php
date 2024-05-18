@@ -16,6 +16,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Path;
 use resourceTools\exception\ContentsFileException;
 use resourceTools\helper\Transformer;
+use resourceTools\helper\ManifestReader;
+use resourceTools\fileaccess\FileAccess;
 
 class DecryptRecursive extends Command{
     private const TYPE_ZIP = "zip";
@@ -134,6 +136,24 @@ class DecryptRecursive extends Command{
                     continue;
                 }
                 $files[basename($file)] = $file;
+				$output->writeln("scaning keys: $file");
+				foreach(scandir($file) as $file1){
+					$extention = pathinfo($file1, PATHINFO_EXTENSION);
+					if($extention === "key"&&filesize($file1) >= 32){
+						try{
+							$uuid1 = ManifestReader::getUUID(new FileAccess($file));
+						}catch(\Throwable $e){
+							$output->writeln("scaning keys: ".$file." was skipped. reason: Unable to read ".$file."/".$file1."/manifest.json");
+							continue;
+						}
+						foreach(file($file1) as $line){
+							if(strlen($line) === 32){
+								$keys[$uuid1] = $line;
+								$output->writeln("found key: $uuid1/$line ($file1)");
+							}
+						}
+					}
+				}
                 continue;
             }
             if($this->isZip($file)){
