@@ -124,11 +124,13 @@ function readKeyFile(string $path): ?string{
         if(!str_ends_with($file, ".key")){
             continue;
         }
-        $key = trim(file_get_contents($path."/".$file));
-        if(strlen($key) !== 32){
-            continue;
-        }
-        return $key;
+		$key1 = file_get_contents($path."/".$file);
+		foreach([$key1, trim($key1)] as $key){
+			if(strlen($key) !== 32){
+				continue;
+			}
+			return $key;
+		}
     }
     return null;
 }

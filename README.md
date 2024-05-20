@@ -85,3 +85,17 @@ php decrypt.php input -o output
 ```
 php resourceTools.phar rd -d original -o original
 ```
+
+### Other points to note
+The main program does not support non-printable keys because it uses file() and trim()  
+Unprintable keys are not tested throughout the program and may cause the key to be rejected as invalid  
+If there is a resource pack that uses non-printable keys, decrypt.php may work  
+Please note that when using non-printable keys, the key file must be 32 bytes and must not contain newlines  
+
+
+If the -r option is used with encryption, the program will generate resource_packs in pmmp format  
+If the -r option is used, you must do the zip creation yourself  
+( please note that contents.json must be in the root of the zip and does not support resource_packs in nested folders)
+```
+resourceTools.phar e testR1 -r -o "resource pack name"
+```

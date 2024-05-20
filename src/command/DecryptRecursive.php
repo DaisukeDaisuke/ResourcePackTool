@@ -138,21 +138,43 @@ class DecryptRecursive extends Command{
                 $output->writeln("scaning keys: $file");
                 foreach(scandir($file) as $file1){
                     $extention = pathinfo($file1, PATHINFO_EXTENSION);
-                    if($extention === "key"&&filesize($file1) >= 32){
+					$path1 = Path::join($file,$file1);
+                    if(($extention === "key"||$extention === "keys"||$extention === "txt"||$extention === "log")&&filesize($path1) >= 32){
                         try{
                             $uuid1 = ManifestReader::getUUID(new FileAccess($file));
                         }catch(\Throwable $e){
                             $output->writeln("scaning keys: ".$file." was skipped. reason: Unable to read ".$file."/".$file1."/manifest.json");
                             continue;
                         }
-                        foreach(file($file1) as $line){
-                            if(strlen($line) === 32){
-                                $keys[$uuid1] = $line;
-                                $output->writeln("found key: $uuid1/$line ($file1)");
-                            }
+						$foundkey = false;
+						$lastKey = null;
+                        foreach(file($path1) as $line){
+							$foundkey1 = false;
+							foreach([$line, trim($line)] as $line2){
+								if(strlen($line2) === 32){
+									if($foundkey === false){
+										$keys[$uuid1] = $line2;
+										$output->writeln("found key: $uuid1/$line2 ($file1)");
+										$lastKey = $line2;
+										$foundkey = true;
+										$foundkey1 = true;
+									}else{
+										if($lastKey !== null){
+											$preferential_keys[] = $lastKey;
+											$lastKey = null;
+										}
+										$foundkey1 = true;
+										$output->writeln("Primary key found: $uuid1/$line2 ($file1)");
+										$preferential_keys[] = $line2;
+									}
+									break;
+								}
+							}
                         }
                     }
                 }
+
+
                 continue;
             }
             if($this->isZip($file)){
